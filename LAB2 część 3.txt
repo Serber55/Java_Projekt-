@@ -1,0 +1,17 @@
+package pl.lublin.wsei.java.cwiczenia;
+
+import pl.lublin.wsei.java.cwiczenia.mylib.StringFun;
+
+import java.util.Scanner;
+
+public class DeCamelizeTest {
+    public static void main(String[] args) {
+        Scanner skaner = new Scanner(System.in);
+        do {
+            System.out.print("Podaj tekst do konwersji (0 jak ci się znudzi): ");
+            String tekst = skaner.next();
+            if (tekst.equals("0")) break;
+            System.out.println("Result: " + StringFun.deCamelize(tekst) + "\n");
+        } while (true);
+    }
+}
