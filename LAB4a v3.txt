@@ -1,0 +1,94 @@
+GusInfoGraphicList
+Wysłałeś wiadomość Dzisiaj o 21:19
+package pl.lublin.wsei.java.cwiczenia;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.ArrayList;
+
+public class GusInfoGraphicList {
+    public ArrayList<Infografika> infografiki;
+
+    public GusInfoGraphicList(String gusFileName){
+        infografiki = new ArrayList<>();
+        String contents;
+        try {
+            contents = new String(Files.readAllBytes(Paths.get(gusFileName)));
+        }
+        catch (IOException e){
+            System.out.println("Błąd wczytywania pliku gusInfoGraphic.xml => " + e.getLocalizedMessage());
+            e.printStackTrace();
+            contents = "";
+        }
+        String[] items = contents.split("<item>");
+        for(int i = 1; i < items.length; i++){
+            infografiki.add(new Infografika(items[i]));
+        }
+    }
+}
+Wysłałeś wiadomość Dzisiaj o 21:19
+Infografika
+Wysłałeś wiadomość Dzisiaj o 21:20
+package pl.lublin.wsei.java.cwiczenia;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+public class Infografika {
+    public String tytul;
+    
+    public String adresMiniaturki;
+    public String adresStrony;
+    public String adresGrafiki;
+    public int wysokosc;
+    public int szerokosc;
+
+    public Infografika(String tekst){
+
+        Pattern pat = Pattern.compile("<title><!\\[CDATA\\[(.*)\\]\\]");
+        Matcher m = pat.matcher(tekst);
+        if (m.find()) tytul = m.group(1);
+        else tytul ="";
+
+        pat = Pattern.compile("<link>(.*)/link");
+        m = pat.matcher(tekst);
+        if (m.find()) adresStrony = m.group(1);
+        else adresStrony ="";
+
+        pat = Pattern.compile("media:content url=\\\"(.*)\\\"");
+        m = pat.matcher(tekst);
+        if (m.find()) adresGrafiki = m.group(1);
+        else adresGrafiki ="";
+
+        pat = Pattern.compile("media:thumbnail url=\\\"(.*)\\\"");
+        m = pat.matcher(tekst);
+        if (m.find()) adresMiniaturki = m.group(1);
+        else adresMiniaturki ="";
+
+        pat = Pattern.compile("height=\\\"(.*)\\\"");
+        m = pat.matcher(tekst);
+        if (m.find()) wysokosc = Integer.parseInt( m.group(1));
+        else wysokosc = 0;
+
+        pat = Pattern.compile("width=\\\"(.*)\\\" ");
+        m = pat.matcher(tekst);
+        if (m.find()) szerokosc = Integer.parseInt( m.group(1));
+        else szerokosc = 0;
+
+    }
+
+    public void print() {
+        System.out.println("Infografika: ");
+        System.out.println("tytul: " + this.tytul);
+        System.out.println("adresStrony: " + this.adresStrony);
+        System.out.println("adresGrafiki: " + this.adresGrafiki);
+        System.out.println("adresMiniaturki: " + this.adresMiniaturki);
+        System.out.println("wysokosc: " + this.wysokosc);
+        System.out.println("szerokosc: " + this.szerokosc);
+    }
+}
+Wysłałeś wiadomość Dzisiaj o 21:21
+Pattern.compile("<link>(.*)</link")
+Wysłałeś wiadomość Dzisiaj o 21:21
+i te \\\ poprawcie na \
